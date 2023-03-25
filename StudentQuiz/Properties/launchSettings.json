@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "StudentQuiz (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "StudentQuiz (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+# .NET Desktop
+# Build and run tests for .NET Desktop or Windows classic desktop solutions.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+
+trigger:
+- none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'x64'
+  buildConfiguration: 'Release'
+
+steps:
+- task: DownloadSecureFile@1
+  displayName: Download signing certificate
+  name: signingCert
+  inputs:
+    secureFile: 'StudentQuiz_TemporaryKey.pfx'
+
+- task: NuGetToolInstaller@1
+  displayName: Install Nuget
+
+- task: NuGetCommand@2
+  displayName: Restore nuget packages
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  displayName: Build and package
+  inputs:
+    solution: '$(solution)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    msbuildArgs: '/p:UapAppxPackageBuildMode=SideloadOnly /p:AppxBundle=Never /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\\" /p:GenerateAppxPackageOnBuild=true /p:PublishReadyToRun=false'
+
+- task: VSTest@2
+  displayName: Run tests
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\bin\$(BuildConfiguration)\**\*.Tests.dll
+      !**\obj\**
+      !**\ref\**
+      !**\xunit.runner.visualstudio.testadapter.dll
+      !**\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    
+- task: PublishPipelineArtifact@1
+  displayName: Publish to pipeline
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'Win UI Layout Package'
+

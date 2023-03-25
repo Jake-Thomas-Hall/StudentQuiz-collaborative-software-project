@@ -1,0 +1,28 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<ContentDialog
+    x:Class="StudentQuiz.Dialogs.CreateAnswerDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Add Answer"
+    PrimaryButtonText="Add"
+    CloseButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    DefaultButton="Primary"
+    Style="{ThemeResource DefaultContentDialogStyle}">
+
+    <StackPanel>
+        <TextBox x:Name="AnswerText" Text="{x:Bind NewAnswer.AnswerText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="Answer" Margin="0,8,0,8" />
+        <ToggleSwitch Header="Mark Correct" OffContent="Incorrect" OnContent="Correct" IsOn="{x:Bind NewAnswer.IsCorrect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,8,0,0"/>
+        
+        <InfoBar Name="ErrorInfobar"
+                 Title="Error adding question"
+                 IsOpen="False"
+                 Severity="Error" />
+    </StackPanel>
+</ContentDialog>

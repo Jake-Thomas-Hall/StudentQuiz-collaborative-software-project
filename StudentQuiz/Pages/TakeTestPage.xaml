@@ -1,0 +1,83 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="StudentQuiz.Pages.TakeTest"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+
+    <StackPanel Margin="0,56,0,0">
+        <RelativePanel Margin="0,0,0,8">
+            <TextBlock TextWrapping="WrapWholeWords" FontSize="40" FontWeight="SemiBold" Name="TestNameTextBlock">Test title placeholder</TextBlock>
+            <Button RelativePanel.AlignRightWithPanel="True" 
+                    RelativePanel.AlignVerticalCenterWithPanel="True" 
+                    Name="EndTestButton" 
+                    Click="EndTestButton_Click" 
+                    Style="{StaticResource AccentButtonStyle}">End test</Button>
+        </RelativePanel>
+        <RelativePanel Margin="0,0,0,16">
+            <RichTextBlock FontSize="18" RelativePanel.AlignVerticalCenterWithPanel="True">
+                <Paragraph>
+                    <Run FontWeight="SemiBold">Subject:</Run>
+                    <Run x:Name="TestSubjectTextBlock">Placeholder</Run>
+                </Paragraph>
+            </RichTextBlock>
+            <StackPanel RelativePanel.AlignRightWithPanel="True" 
+                        Orientation="Horizontal"
+                        Visibility="Collapsed"
+                        Name="TestTimer"
+                        Padding="8"
+                        CornerRadius="6" 
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                <ProgressRing Name="TimerRing" 
+                              Width="40" 
+                              Height="40" 
+                              Value="0" 
+                              Margin="0,0,16,0" 
+                              IsIndeterminate="False" 
+                              VerticalAlignment="Center"/>
+                <RichTextBlock VerticalAlignment="Center">
+                    <Paragraph>
+                        <Run x:Name="TimerDisplay" FontWeight="Bold">00:00:00</Run>
+                        <Run>Remaining</Run>
+                    </Paragraph>
+                </RichTextBlock>
+            </StackPanel>
+        </RelativePanel>
+        
+        <TextBlock Margin="0,0,0,16" FontSize="20" FontWeight="SemiBold">
+            Question <Run x:Name="QuestionCurrentText"></Run> of <Run x:Name="QuestionCountText"></Run>
+        </TextBlock>
+        <ProgressBar Name="QuestionProgressBar" Margin="0,0,0,16" Width="Auto" Value="25"/>
+        <StackPanel Margin="0,0,0,16" 
+                    Padding="30" 
+                    CornerRadius="6" 
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <TextBlock Margin="0,0,0,16" 
+                       TextWrapping="WrapWholeWords" 
+                       FontSize="28" 
+                       FontWeight="SemiBold"
+                       Name="QuestionTextBlock"></TextBlock>
+            <RadioButtons Name="AnswerRadioButtons" 
+                          Header="Select answer" 
+                          SelectionChanged="AnswerRadioButtons_SelectionChanged">
+                <RadioButton Content="Item1" Name="AnswerItem1"></RadioButton>
+                <RadioButton Content="Item1" Name="AnswerItem2"></RadioButton>
+                <RadioButton Content="Item1" Name="AnswerItem3"></RadioButton>
+                <RadioButton Content="Item1" Name="AnswerItem4"></RadioButton>
+            </RadioButtons>
+        </StackPanel>
+        <RelativePanel Margin="0,0,0,16">
+            <Button Name="TestPreviousButton" Click="TestPreviousButton_Click" IsEnabled="False">Previous</Button>
+            <Button Name="TestNextButton" 
+                    RelativePanel.AlignRightWithPanel="true" 
+                    Click="TestNextButton_Click"
+                    Style="{StaticResource AccentButtonStyle}">Next</Button>
+        </RelativePanel>
+    </StackPanel>
+</Page>

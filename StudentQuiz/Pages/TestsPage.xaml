@@ -1,0 +1,155 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="StudentQuiz.Pages.TestsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:t="using:StudentQuiz.Entities"
+    Loaded="TestPage_Loaded">
+
+    <Grid>
+        <Pivot Margin="0">
+            <PivotItem Header="Incomplete" Margin="0">
+                <StackPanel Margin="0,16,0,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="Expander">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16" Spacing="16">
+                        <AutoSuggestBox Name="DueSearchBox" MinWidth="200"
+                            PlaceholderText="Search..."
+                            TextChanged="DueSearchBox_TextChanged"
+                            QueryIcon="Find"/>
+                        <AutoSuggestBox Name="SubjectFilterAutoSuggest" DisplayMemberPath="Name" TextMemberPath="Name" TextChanged="SubjectFilterAutoSuggest_TextChanged" MinWidth="250" PlaceholderText="Type to filter by subject"></AutoSuggestBox>
+                        <ComboBox Name="DueOrderByBox" MinWidth="150" PlaceholderText="Order by" SelectionChanged="DueOrderByBox_SelectionChanged">
+                            <x:String>Due Date Ascending</x:String>
+                            <x:String>Due Date Descending</x:String>
+                        </ComboBox>
+                        <Button Name="ResetDueFilters" Click="ResetDueFilters_Click" IsEnabled="False">Reset</Button>
+                    </StackPanel>
+
+                    <ItemsRepeater Name="DueTestsRepeater">
+                        <DataTemplate x:DataType="t:TestAssignment">
+                            <Expander Margin="0,0,0,5">
+                                <Expander.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock MaxWidth="400" Text="{x:Bind Test.Name}" Padding="10" TextWrapping="WrapWholeWords"/>
+                                            <RichTextBlock VerticalAlignment="Center" Padding="10" TextWrapping="WrapWholeWords">
+                                                <Paragraph>
+                                                    <Run FontWeight="Bold" Text="{x:Bind Test.QuestionCount}"></Run>
+                                                    Questions
+                                                </Paragraph>
+                                            </RichTextBlock>
+                                        </StackPanel>
+                                        <RichTextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="10" TextWrapping="WrapWholeWords">
+                                            <Paragraph>
+                                                <Run FontWeight="Bold">Due:</Run>
+                                                <Run Text="{x:Bind DueDate}"></Run>
+                                            </Paragraph>
+                                        </RichTextBlock>
+                                    </Grid>
+                                </Expander.Header>
+                                <Expander.Content>
+                                    <StackPanel Padding="10">
+                                        <TextBlock Name="TestDescription" TextWrapping="Wrap" Text="{x:Bind Test.Description}"/>
+                                        <RichTextBlock Margin="0,16,0,0" Visibility="{x:Bind IsTimedTest}">
+                                            <Paragraph>
+                                                <Run FontWeight="SemiBold">Note: </Run>
+                                                <Run>This is a timed test running for </Run>
+                                                <Run FontWeight="SemiBold" Text="{x:Bind Test.TimeLimitMinutesString}"></Run> minutes
+                                            </Paragraph>
+                                        </RichTextBlock>
+                                        <Button Name="TakeTest" Click="TakeTest_Click" DataContext="{x:Bind}" Margin="0,16,0,0" Style="{StaticResource AccentButtonStyle}" Content="Take Test"/>
+                                    </StackPanel>
+                                </Expander.Content>
+                            </Expander>
+                        </DataTemplate>
+                    </ItemsRepeater>
+                </StackPanel>
+            </PivotItem>
+            <PivotItem Header="Completed">
+                <StackPanel Margin="0,16,0,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="Expander">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16" Spacing="16">
+                        <AutoSuggestBox Name="CompletedSearchBox" MinWidth="200"
+                            PlaceholderText="Search..."
+                            TextChanged="CompletedSearchBox_TextChanged"
+                            QueryIcon="Find"/>
+                    </StackPanel>
+
+                    <ItemsRepeater Name="CompletedTestsRepeater">
+                        <DataTemplate x:DataType="t:TestAssignment">
+                            <Expander Margin="0,0,0,5">
+                                <Expander.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock MaxWidth="400" Text="{x:Bind Test.Name}" Padding="10" TextWrapping="WrapWholeWords"/>
+                                            <RichTextBlock VerticalAlignment="Center" Padding="10" TextWrapping="WrapWholeWords">
+                                                <Paragraph>
+                                                    <Run FontWeight="Bold" Text="{x:Bind Test.QuestionCount}"></Run>
+                                                    Questions
+                                                </Paragraph>
+                                            </RichTextBlock>
+                                        </StackPanel>
+
+                                        <RichTextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="10" TextWrapping="WrapWholeWords">
+                                            <Paragraph>
+                                                <Run FontWeight="Bold">Completed: </Run>
+                                                <Run Text="{x:Bind CompletedDate}"></Run>
+                                            </Paragraph>
+                                        </RichTextBlock>
+                                    </Grid>
+
+                                </Expander.Header>
+                                <Expander.Content>
+                                    <StackPanel Padding="10">
+                                        <TextBlock Name="TestDescription" TextWrapping="Wrap" Text="{x:Bind Test.Description}"/>
+                                        <StackPanel Orientation="Horizontal" Spacing="16" Padding="0,10,0,0">
+                                            <RichTextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">
+                                                <Paragraph>
+                                                    <Run FontWeight="Bold">Score: </Run>
+                                                    <Run Text="{x:Bind ScoreCount}"></Run>
+                                                </Paragraph>
+                                            </RichTextBlock>
+                                            <RichTextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">
+                                                <Paragraph>
+                                                    <Run FontWeight="Bold">Percentage Correct:</Run>
+                                                    <Run Text="{x:Bind Percentage}"></Run>%
+                                                </Paragraph>
+                                            </RichTextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Expander.Content>
+                            </Expander>
+                        </DataTemplate>
+                    </ItemsRepeater>
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>

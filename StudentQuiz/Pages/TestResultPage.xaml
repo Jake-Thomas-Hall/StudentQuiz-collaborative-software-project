@@ -1,0 +1,49 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="StudentQuiz.Pages.TestResultPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+
+    <StackPanel Spacing="16">
+        <Grid Margin="0,16,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Spacing="16">
+                <TextBlock FontSize="20">
+                    Subject:
+                </TextBlock>
+                <TextBlock Name="TestSubject" FontSize="28" TextWrapping="Wrap" FontWeight="SemiBold"/>
+                <TextBlock FontSize="20">
+                    Score:
+                </TextBlock>
+                <TextBlock Name="TestScore" FontSize="68" FontWeight="SemiBold"/>
+                <TextBlock FontSize="20">
+                    Questions Correct:
+                </TextBlock>
+                <TextBlock Name="TestQuestionResult" FontSize="68" FontWeight="SemiBold"/>
+            </StackPanel>
+            <StackPanel Spacing="16" Grid.Column="1">
+                <TextBlock FontSize="20">
+                    Test Name:
+                </TextBlock>
+                <TextBlock Name="TestName" FontSize="28" TextWrapping="Wrap" FontWeight="SemiBold"/>
+                <TextBlock FontSize="20">
+                    Percentage Correct:
+                </TextBlock>
+                <TextBlock Name="TestPercentage" FontSize="68" FontWeight="SemiBold"/>
+            </StackPanel>
+        </Grid>
+        <Button Click="BackButton_Click" Margin="0,16,0,0" Name="BackButton" Style="{StaticResource AccentButtonStyle}">Back to Test Assignments</Button>
+    </StackPanel>
+
+</Page>

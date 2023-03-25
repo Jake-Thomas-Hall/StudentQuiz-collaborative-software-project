@@ -1,0 +1,87 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Window
+    x:Class="StudentQuiz.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Border 
+            x:Name="AppTitleBar" 
+            IsHitTestVisible="True"
+            VerticalAlignment="Top"
+            Height="{Binding ElementName=NavView, Path=CompactPaneLength}"
+            Canvas.ZIndex="1">
+            <TextBlock x:Name="AppTitle" 
+                       Text="Student Quiz" 
+                       VerticalAlignment="Top"
+                       Margin="0,15,0,0"
+                       Style="{StaticResource CaptionTextBlockStyle}"/>
+        </Border>
+        
+        <NavigationView x:Name="NavView"
+                        PaneDisplayMode="Auto"
+                        SelectionChanged="NavView_MenuNavigation"
+                        IsSettingsVisible="True"
+                        IsTitleBarAutoPaddingEnabled="False"
+                        IsBackEnabled="{x:Bind contentFrame.CanGoBack, Mode=OneWay}"
+                        BackRequested="NavView_BackRequested"
+                        DisplayModeChanged="NavView_DisplayModeChanged"
+                        PaneOpening="NavView_PaneOpening"
+                        PaneClosing="NavView_PaneClosing"
+                        Loaded="NavView_Loaded">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Home Page" Tag="home">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE80F;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Sign up" Tag="signup" Name="SignUpNavItem">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF427;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Tests" Tag="tests" Name="TestsNavItem">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA86;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Users" Tag="users" Name="UsersNavItem">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE902;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Subjects" Tag="subjects" Name="SubjectsNavItem">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE7BE;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Manage Tests" Tag="managetests" Name="ManageTestsNavItem">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE932;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Student Leaderboards" Tag="leaderboard" Name="LeaderboardNavItem">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE9D2;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItem Name="LogoutNavItem" Content="Logout" Tag="logout" Icon="Back" IsTabStop="True" />
+                <NavigationViewItem Name="AccountNavItem" Content="Account" Tag="account" Icon="Contact" IsTabStop="True" />
+            </NavigationView.FooterMenuItems>
+            
+            <ScrollViewer Padding="56, 0, 0, 0">
+                <Frame x:Name="contentFrame" Padding="0,0,40,0"/>
+            </ScrollViewer>
+        </NavigationView>
+    </Grid>
+</Window>

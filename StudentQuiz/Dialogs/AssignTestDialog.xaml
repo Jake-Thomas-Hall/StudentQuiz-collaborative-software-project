@@ -1,0 +1,83 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<ContentDialog
+    x:Class="StudentQuiz.Dialogs.AssignTestDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:t="using:StudentQuiz.Entities"
+    mc:Ignorable="d"
+    Title="Assign Test"
+    PrimaryButtonText="Assign"
+    CloseButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    DefaultButton="Primary"
+    Style="{ThemeResource DefaultContentDialogStyle}">
+
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" Spacing="16">
+            <CalendarDatePicker Name="AssignDueDate" PlaceholderText="Pick due date" Header="Due Date" />
+            <TimePicker Name="AssignDueTime" Header="Due Time"/>
+        </StackPanel>
+        <AutoSuggestBox Name="AssignStudentSearch" 
+                        Header="Find Student"
+                        MinWidth="200"
+                        PlaceholderText="Search..."
+                        TextChanged="AssignStudentSearch_TextChanged"
+                        QueryIcon="Find"
+                        Margin="0,16,0,16"/>
+        <InfoBar
+            x:Name="ErrorInfobar"
+            IsOpen="False"
+            Title="Could not assign"
+            Severity="Error" />
+        <StackPanel Visibility="Collapsed" Name="FoundUsersStackPanel">
+            <TextBlock FontSize="20" FontWeight="SemiBold" >Found Users</TextBlock>
+            <ItemsControl Name="FoundUsersListControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="t:User">
+                        <Grid Margin="0,8,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="50" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Padding="0,0,6,0" Text="{x:Bind StudentNumber}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                            <TextBlock Padding="0,0,6,0" Grid.Column="1" Text="{x:Bind FullName}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" MinWidth="0" HorizontalAlignment="Right">
+                                <Button Name="AddButton" Content="Add" Click="AddButton_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+
+        <StackPanel Visibility="Collapsed" Name="SelectedUsersStackPanel">
+            <TextBlock FontSize="20" FontWeight="SemiBold">Selected</TextBlock>
+            <ItemsControl Name="SelectedUsersListControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="t:User">
+                        <Grid Margin="0,8,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Padding="0,0,6,0" Text="{x:Bind StudentNumber}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                            <TextBlock Padding="0,0,6,0" Grid.Column="1" Text="{x:Bind FullName}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" MinWidth="0" HorizontalAlignment="Right">
+                                <Button Name="RemoveButton" Content="Remove" Style="{StaticResource DangerButtonStyle}" Click="RemoveButton_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </StackPanel>
+</ContentDialog>

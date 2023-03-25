@@ -1,0 +1,99 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<UserControl
+    x:Class="StudentQuiz.Controls.ListSubjectsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz.Controls"
+    xmlns:t="using:StudentQuiz.Entities"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Control_Loaded">
+
+    <StackPanel Margin="0,16,0,0">
+        <RelativePanel Margin="0,0,0,16">
+            <AutoSuggestBox Name="SubjectSearch" MinWidth="200"
+                            PlaceholderText="Search..."
+                            TextChanged="SubjectSearch_TextChanged"
+                            QueryIcon="Find"
+                            Margin="0,0,16,0"/>
+            <ComboBox RelativePanel.RightOf="SubjectSearch" 
+                      Name="SubjectsOrderBox" 
+                      SelectionChanged="SubjectsOrderBox_SelectionChanged" 
+                      MinWidth="150" PlaceholderText="Order by" 
+                      ItemsSource="{x:Bind OrderOptions}"
+                      DisplayMemberPath="Visible" 
+                      SelectedValuePath="Value"/>
+            <Button Name="AddSubjectButton" Style="{StaticResource AccentButtonStyle}" 
+                    RelativePanel.AlignRightWithPanel="True" 
+                    Click="AddSubjectButton_Click">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock>Add Subject</TextBlock>
+                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE109;"/>
+                </StackPanel>
+            </Button>
+        </RelativePanel>
+
+        <GridView Margin="-8,0,-8,-8" Name="SubjectsGridView" SelectionMode="None" SizeChanged="SubjectsGridView_SizeChanged">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="8, 0, 8, 16"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                </Style>
+            </GridView.ItemContainerStyle>
+
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="t:Subject">
+                    <StackPanel Padding="14" CornerRadius="6" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                        <TextBlock FontWeight="Bold" FontSize="18" Padding="0,0,0,16" Text="{x:Bind Name}" TextWrapping="WrapWholeWords"></TextBlock>
+                        <RichTextBlock Padding="0,0,0,16">
+                            <Paragraph>
+                                <Run FontWeight="Bold">Added:</Run>
+                                <Run Text="{x:Bind CreatedDateTime}"></Run>
+                            </Paragraph>
+                        </RichTextBlock>
+                        <RichTextBlock Visibility="{x:Bind Historical}" >
+                            <Paragraph>
+                                <Run FontWeight="Bold">Historical:</Run>
+                                <Run Text="{x:Bind MarkedHistoricalDateTime}"></Run>
+                            </Paragraph>
+                        </RichTextBlock>
+                        <StackPanel Orientation="Horizontal" Spacing="10" Visibility="{x:Bind Historical, Converter={StaticResource VisibilityInverter}}">
+                            <Button Style="{StaticResource AccentButtonStyle}" Click="EditSubjectButton_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <TextBlock>Edit</TextBlock>
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE70F;"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource DangerButtonStyle}" Click="MarkHistoricSubjectButton_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <TextBlock>Historical</TextBlock>
+                                    <FontIcon FontFamily="Segoe Fluent Icons" FontSize="14" Glyph="&#xE81C;"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+
+        <RelativePanel Margin="0,0,0,16">
+            <Button Name="SubjectsPreviousButton" Click="SubjectsPreviousButton_Click" IsEnabled="False">Previous</Button>
+            <RichTextBlock  RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True">
+                <Paragraph>
+                    <Run Text="Page"/>
+                    <Run FontWeight="Bold" Text="1" x:Name="SubjectPageNumber"/>
+                </Paragraph>
+            </RichTextBlock>
+            <Button Name="SubjectsNextButton" Click="SubjectsNextButton_Click" RelativePanel.AlignRightWithPanel="true" Style="{StaticResource AccentButtonStyle}">Next</Button>
+        </RelativePanel>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,148 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="StudentQuiz.Pages.LeaderboardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:chart="using:Syncfusion.UI.Xaml.Charts"
+    xmlns:t="using:StudentQuiz.Entities.DataEntities"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+
+    <StackPanel Margin="0,16,0,32" Spacing="16">
+        <ComboBox Header="Subject" Name="SubjectComboBox" DisplayMemberPath="Name" SelectionChanged="SubjectComboBox_SelectionChanged"/>
+
+        <TextBlock FontWeight="SemiBold" FontSize="20">Top 10 students by score</TextBlock>
+        <chart:SfCartesianChart>
+            <chart:SfCartesianChart.XAxes>
+                <chart:CategoryAxis ShowMajorGridLines="False" LabelPlacement="BetweenTicks" />
+            </chart:SfCartesianChart.XAxes>
+
+            <chart:SfCartesianChart.YAxes>
+                <chart:NumericalAxis FontFamily="Segoe UI" Header="Score (Points)" Interval="200" Minimum="0" />
+            </chart:SfCartesianChart.YAxes>
+
+            <chart:ColumnSeries 
+                        Name="StudentScoreChartSeries"
+                        EnableAnimation="True" 
+                        ShowDataLabels="True" 
+                        Label="Student score"
+                        XBindingPath="FullName" 
+                        YBindingPath="ScoreCount">
+                <chart:ColumnSeries.DataLabelSettings>
+                    <chart:CartesianDataLabelSettings 
+                        Position="Inner">
+                    </chart:CartesianDataLabelSettings>
+                </chart:ColumnSeries.DataLabelSettings>
+            </chart:ColumnSeries>
+        </chart:SfCartesianChart>
+
+        <TextBlock FontWeight="SemiBold" FontSize="20">Top 10 students by correct %</TextBlock>
+        <chart:SfCartesianChart>
+            <chart:SfCartesianChart.XAxes>
+                <chart:CategoryAxis ShowMajorGridLines="False" LabelPlacement="BetweenTicks" />
+            </chart:SfCartesianChart.XAxes>
+
+            <chart:SfCartesianChart.YAxes>
+                <chart:NumericalAxis FontFamily="Segoe UI" Header="Average Correct Percentage (%)" Interval="10" Maximum="100" Minimum="0" />
+            </chart:SfCartesianChart.YAxes>
+
+            <chart:ColumnSeries 
+                        Name="StudentPercentageChartSeries"
+                        EnableAnimation="True" 
+                        ShowDataLabels="True" 
+                        Label="Student score"
+                        XBindingPath="FullName" 
+                        YBindingPath="PercentageCorrect">
+                <chart:ColumnSeries.DataLabelSettings>
+                    <chart:CartesianDataLabelSettings 
+                        Position="Inner">
+                    </chart:CartesianDataLabelSettings>
+                </chart:ColumnSeries.DataLabelSettings>
+            </chart:ColumnSeries>
+        </chart:SfCartesianChart>
+
+        <TextBlock FontWeight="SemiBold" FontSize="20">Top 10 students by correct answers</TextBlock>
+        <chart:SfCartesianChart>
+            <chart:SfCartesianChart.XAxes>
+                <chart:CategoryAxis ShowMajorGridLines="False" LabelPlacement="BetweenTicks" />
+            </chart:SfCartesianChart.XAxes>
+
+            <chart:SfCartesianChart.YAxes>
+                <chart:NumericalAxis FontFamily="Segoe UI" Header="Correct Answers" Interval="50" Minimum="0" />
+            </chart:SfCartesianChart.YAxes>
+
+            <chart:ColumnSeries 
+                        Name="StudentAnswerCorrectChartSeries"
+                        EnableAnimation="True" 
+                        ShowDataLabels="True" 
+                        Label="Student score"
+                        XBindingPath="FullName" 
+                        YBindingPath="CorrectQuestionCount">
+                <chart:ColumnSeries.DataLabelSettings>
+                    <chart:CartesianDataLabelSettings 
+                        Position="Inner">
+                    </chart:CartesianDataLabelSettings>
+                </chart:ColumnSeries.DataLabelSettings>
+            </chart:ColumnSeries>
+        </chart:SfCartesianChart>
+
+        <TextBlock FontWeight="SemiBold" FontSize="20">All students</TextBlock>
+        <StackPanel Orientation="Horizontal" Spacing="16">
+            <AutoSuggestBox Name="LeaderboardSearchBox" MinWidth="200"
+                            PlaceholderText="Search..."
+                            QueryIcon="Find"
+                            TextChanged="LeaderboardSearchBox_TextChanged"
+                            Header="Search"/>
+            <ComboBox Name="LeaderboardOrderComboBox" 
+                      PlaceholderText="Order by" 
+                      ItemsSource="{x:Bind OrderOptions}"
+                      SelectedIndex="0"
+                      DisplayMemberPath="Visible" 
+                      SelectedValuePath="Value"
+                      SelectionChanged="LeaderboardOrderComboBox_SelectionChanged"
+                      MinWidth="150"
+                      Header="Order by"/>
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock FontWeight="Bold" Padding="0,0,6,0" Text="Student Number" />
+            <TextBlock FontWeight="Bold" Padding="0,0,6,0" Grid.Column="1" Text="Student name" />
+            <TextBlock FontWeight="Bold" Padding="0,0,6,0" Grid.Column="2" Text="Total Points" />
+            <TextBlock FontWeight="Bold" Padding="0,0,6,0" Grid.Column="3" Text="Total Correct Answers" />
+            <TextBlock FontWeight="Bold" Grid.Column="4" Text="Percentage Correct" />
+        </Grid>
+        <ItemsControl Name="AllLeaderboardListControl">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="t:Leaderboard">
+                    <Grid Margin="0,8,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Padding="0,0,6,0" Text="{x:Bind StudentNumber}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        <TextBlock Padding="0,0,6,0" Grid.Column="1" Text="{x:Bind FullName}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        <TextBlock Padding="0,0,6,0" Grid.Column="2" Text="{x:Bind ScoreCount}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        <TextBlock Padding="0,0,6,0" Grid.Column="3"  Text="{x:Bind CorrectQuestionCount}" VerticalAlignment="Center"/>
+                        <TextBlock Padding="0,0,6,0" Grid.Column="4" Text="{x:Bind PercentageCorrectString}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</Page>

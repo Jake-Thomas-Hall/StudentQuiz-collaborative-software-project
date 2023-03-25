@@ -1,0 +1,96 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="StudentQuiz.Pages.AccountPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+
+    <StackPanel Spacing="16" Margin="0,16,0,0">
+        <StackPanel Padding="16" 
+                    CornerRadius="6"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <TextBlock Margin="0,0,0,8" FontWeight="SemiBold" FontSize="20">Details</TextBlock>
+            <InfoBar
+                Name="UpdateDetailsInfobar"
+                Severity="Informational" 
+                IsOpen="False" 
+                Title="Details updated" 
+                Message="Your details have been updated."/>
+            <Grid Margin="0,8,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Padding="0,0,8,0" Spacing="16">
+                    <RichTextBlock TextWrapping="Wrap" Name="StudentNumberContainer">
+                        <Paragraph Margin="0,0,0,6">
+                            Student Number
+                        </Paragraph>
+                        <Paragraph>
+                            <Run x:Name="UserStudentNumberText" FontWeight="SemiBold">WS329452</Run>
+                        </Paragraph>
+                    </RichTextBlock>
+                    <RichTextBlock TextWrapping="Wrap">
+                        <Paragraph Margin="0,0,0,6">
+                            Email
+                        </Paragraph>
+                        <Paragraph>
+                            <Run x:Name="UserEmailText" FontWeight="SemiBold">Placeholder@placeholder.com</Run>
+                        </Paragraph>
+                    </RichTextBlock>
+                    <TextBox Header="First Name" 
+                         Name="UserFirstNameTextBox"
+                         Text="{x:Bind User.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Header="Phone number" 
+                         Name="UserPhoneNumberTextBox"
+                         Text="{x:Bind User.PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         PlaceholderText="e.g. 0771522452"/>
+                    <Button Name="UpdateUserButton" Click="UpdateUserButton_Click" Style="{StaticResource AccentButtonStyle}">Update Details</Button>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Padding="8,0,0,0" Spacing="16">
+                    <RichTextBlock TextWrapping="Wrap" Name="StudentCourseContainer">
+                        <Paragraph Margin="0,0,0,6">
+                            Course
+                        </Paragraph>
+                        <Paragraph>
+                            <Run x:Name="UserCourseText" FontWeight="SemiBold">Placeholder Course</Run>
+                        </Paragraph>
+                    </RichTextBlock>
+                    <RichTextBlock TextWrapping="Wrap">
+                        <Paragraph Margin="0,0,0,6">
+                            User type
+                        </Paragraph>
+                        <Paragraph>
+                            <Run x:Name="UserTypeText" FontWeight="SemiBold">Student</Run>
+                        </Paragraph>
+                    </RichTextBlock>
+                    <TextBox Header="Last Name" 
+                         Name="UserLastNameTextBox"
+                         Text="{x:Bind User.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" 
+                    Spacing="16" 
+                    Padding="16"
+                    CornerRadius="6"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <TextBlock FontWeight="SemiBold" FontSize="20">Danger Zone</TextBlock>
+            <InfoBar 
+                Severity="Error" 
+                IsOpen="True" 
+                Title="This action cannot be undone" 
+                IsClosable="False"
+                Message="Deleting your account cannot be undone, if you choose to perform this action your account and all it's associated data will be removed."/>
+            <Button Name="DeleteAccountButton" Click="DeleteAccountButton_Click" Style="{StaticResource DangerButtonStyle}">Delete account</Button>
+        </StackPanel>
+    </StackPanel>
+    
+</Page>

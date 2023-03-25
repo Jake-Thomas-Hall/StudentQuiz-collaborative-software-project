@@ -1,0 +1,50 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<ContentDialog
+    x:Class="StudentQuiz.Dialogs.AddUserDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Add User"
+    PrimaryButtonText="Add"
+    CloseButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    DefaultButton="Primary"
+    Style="{ThemeResource DefaultContentDialogStyle}">
+
+    <StackPanel>
+        <TextBox PlaceholderText="First Name" 
+                 Header="First Name"
+                 Margin="0,0,0,10"
+                 Text="{x:Bind User.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox PlaceholderText="Last Name"
+                 Header="Last Name"
+                 Margin="0,0,0,10"
+                 Text="{x:Bind User.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox PlaceholderText="Email"
+                 Header="Email"
+                 Margin="0,0,0,10"
+                 Text="{x:Bind User.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox PlaceholderText="Phone Number"
+                 Header="Phone Number"
+                 Margin="0,0,0,10"
+                 Text="{x:Bind User.PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <ComboBox x:Name="UserTypeComboBox" 
+                  Header="User Type"
+                  PlaceholderText="User Type" 
+                  Margin="0,0,0,10"
+                  ItemsSource="{x:Bind UserGroups}"
+                  DisplayMemberPath="Visible" 
+                  SelectedValuePath="Value" 
+                  SelectedValue="{x:Bind User.UserGroup.Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <InfoBar
+            x:Name="ErrorInfobar"
+            IsOpen="False"
+            Title="Could not add"
+            Severity="Error" />
+    </StackPanel>
+</ContentDialog>

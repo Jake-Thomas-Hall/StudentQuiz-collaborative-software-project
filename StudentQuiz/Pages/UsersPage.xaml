@@ -1,0 +1,123 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Page
+    x:Class="StudentQuiz.Pages.UsersPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:t="using:StudentQuiz.Entities"
+    mc:Ignorable="d"
+    xmlns:vc="using:StudentQuiz.Converters"
+    Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <vc:BoolVisibilityInverter x:Key="BoolVisConverter"></vc:BoolVisibilityInverter>
+    </Page.Resources>
+    
+    
+    <Grid>
+        <StackPanel Margin="0,16,0,0">
+            <InfoBar Name="ErrorInfobar"
+                 Title="Error"
+                 IsOpen="False"
+                 Severity="Error" />
+            <RelativePanel Margin="0,8,0,0" Width="Auto">
+                <AutoSuggestBox Name="UsersSearchBox" Margin="0,0,16,0" MinWidth="200"
+                                PlaceholderText="Search..."
+                                TextChanged="SearchBox_TextChanged"
+                                QueryIcon="Find"/>
+                <ComboBox Name="UserGroupFilterBox"
+                          SelectionChanged="UserGroupFilterBox_SelectionChanged"
+                          RelativePanel.RightOf="UsersSearchBox"
+                          PlaceholderText="Filter Groups"
+                          ItemsSource="{x:Bind UserGroups}"
+                          DisplayMemberPath="Visible" 
+                          SelectedValuePath="Value"
+                          Margin="0,0,16,0" 
+                          MinWidth="150"/>
+                <ComboBox Name="OrderByBox" 
+                          SelectionChanged="OrderByBox_SelectionChanged"
+                          RelativePanel.RightOf="UserGroupFilterBox" 
+                          Margin="0,0,16,0" 
+                          PlaceholderText="Order by" 
+                          ItemsSource="{x:Bind OrderOptions}"
+                          DisplayMemberPath="Visible" 
+                          SelectedValuePath="Value"
+                          MinWidth="150"/>
+                <CheckBox Name="DisplayApprovalsCheckBox"
+                          Content="Only Approvals"
+                          RelativePanel.RightOf="OrderByBox"
+                          Margin="0,0,16,0"
+                          Click="DisplayApprovalsCheckBox_CheckChange"/>
+                <Button Name="CreateUserButton" Style="{StaticResource AccentButtonStyle}" Content="New User" RelativePanel.AlignRightWithPanel="True" Click="CreateUserButton_Click"/>
+            </RelativePanel>
+            <Grid Margin="0,16,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="300" />
+                </Grid.ColumnDefinitions>
+                <TextBlock FontWeight="Bold" Padding="0,0,6,0" Text="Email"/>
+                <TextBlock FontWeight="Bold" Padding="0,0,6,0" Grid.Column="1" Text="Full Name" />
+                <TextBlock FontWeight="Bold" Padding="0,0,6,0" Grid.Column="2" Text="Course Title" />
+                <TextBlock FontWeight="Bold" Padding="0,0,6,0" Grid.Column="3" Text="User Group" />
+                <TextBlock FontWeight="Bold" Padding="0,0,6,0" Grid.Column="4" Text="Last Login" />
+                <TextBlock FontWeight="Bold" Padding="0,0,6,0" Grid.Column="5" Text="" />
+            </Grid>
+            <Grid Name="UsersGrid">
+                <Grid.DataContext>
+                    <t:User/>
+                </Grid.DataContext>
+                <ItemsControl Name="UsersItemsControl" ItemsSource="{x:Bind DisplayedUsers, Mode=TwoWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="t:User">
+                            <Grid Margin="0,8,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="300" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Padding="0,0,6,0" Text="{x:Bind Email}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                <TextBlock Padding="0,0,6,0" Grid.Column="1" Text="{x:Bind FullName}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                <TextBlock Padding="0,0,6,0" Grid.Column="2" Text="{x:Bind CourseTitle}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                <TextBlock Padding="0,0,6,0" Grid.Column="3"  Text="{x:Bind UserGroup.Group}" VerticalAlignment="Center"/>
+                                <TextBlock Padding="0,0,6,0" Grid.Column="4" Text="{x:Bind LastLogin}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                <StackPanel Grid.Column="5" Orientation="Horizontal" MinWidth="0" HorizontalAlignment="Right">
+                                    <Button Name="EditButton" 
+                                            Content="Edit" 
+                                            Margin="0,0,8,0"
+                                            Click="EditButton_Click"/>
+                                    <Button Name="ApproveButton" 
+                                            Content="Approve" 
+                                            Visibility="{x:Bind IsConfirmed, Converter={StaticResource BoolVisConverter}}" 
+                                            Margin="0,0,8,0" 
+                                            Click="ApproveButton_Click"/>
+                                    <Button Content="Disable" 
+                                            DataContext="{x:Bind}"
+                                            Visibility="{x:Bind IsDisabled, Converter={StaticResource BoolVisConverter}}" 
+                                            Margin="0,0,8,0" 
+                                            Click="AccessButton_Click"/>
+                                    <Button Content="Enable" 
+                                            DataContext="{x:Bind}"
+                                            Visibility="{x:Bind IsDisabled}" 
+                                            Margin="0,0,8,0"
+                                            Click="AccessButton_Click"/>
+                                    <Button Name="DeleteUserButton" Content="Delete" Style="{StaticResource DangerButtonStyle}" Click="DeleteUserButton_Click"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Page>

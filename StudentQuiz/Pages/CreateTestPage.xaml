@@ -1,0 +1,63 @@
+﻿<Page
+    x:Class="StudentQuiz.Pages.CreateTestPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:StudentQuiz.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vc="using:StudentQuiz.Converters"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+
+    <Grid>
+        <StackPanel Spacing="16" Margin="0,16,0,0">
+            <StackPanel Name="ControlButtonStack" Orientation="Horizontal" Spacing="16" HorizontalAlignment="Right">
+                <Button Name="CreateTestButton" Content="Create" Style="{StaticResource AccentButtonStyle}" Click="CreateTestButton_Click"/>
+                <Button Name="CancelButton" Content="Cancel" Style="{StaticResource DangerButtonStyle}" Click="CancelButton_Click"/>
+            </StackPanel>
+            <InfoBar Name="ErrorInfobar"
+                 Title="Error adding test"
+                 IsOpen="False"
+                 Severity="Error" />
+            <TextBox Name="TestNameTextBox" Header="Test Name"
+                     Text="{x:Bind NewTest.Name, Mode=TwoWay, UpdateSourceTrigger=Default}"
+                     HorizontalAlignment="Left" 
+                     MinWidth="200" 
+                     MaxWidth="300"/>
+            <TextBox Name="DescriptionEditBox" Header="Test Description"
+                     IsSpellCheckEnabled="True"
+                     Text="{x:Bind NewTest.Description, Mode=TwoWay, UpdateSourceTrigger=Default}"
+                     MinWidth="400" 
+                     MaxWidth="500" 
+                     MinHeight="100"
+                     MaxHeight="200"
+                     HorizontalAlignment="Left"/>
+            <ComboBox Name="SubjectComboBox" 
+                      Header="Subject"
+                      DisplayMemberPath="Name"
+                      HorizontalAlignment="Left"
+                      SelectedItem="{x:Bind NewTest.Subject, Mode=TwoWay, UpdateSourceTrigger=Default}"
+                      MinWidth="200" 
+                      MaxWidth="300"
+                      IsTextSearchEnabled="True"
+                      MaxDropDownHeight="300"></ComboBox>
+            <NumberBox Name="QuestionCountNumberBox" 
+                       Header="Question Count"
+                       HorizontalAlignment="Left"
+                       SpinButtonPlacementMode="Compact"
+                       ValidationMode="InvalidInputOverwritten"
+                       ToolTipService.ToolTip="Number of Questions to be shown to a student taking the test. The question pool should be equal in size, or larger."
+                       Value="{x:Bind NewTest.QuestionCount, Mode=TwoWay, UpdateSourceTrigger=Default}"
+                       SmallChange="1"
+                       Maximum="128"
+                       Minimum="1"/>
+            <NumberBox Name="TimeLimitNumberBox" 
+                       Header="Time Limit (Minutes)"
+                       Value="{x:Bind NewTest.TimeLimitSecondsGuard, Mode=TwoWay, Converter={StaticResource TimeLimitConverter}}"
+                       SmallChange="1" 
+                       HorizontalAlignment="Left"
+                       SpinButtonPlacementMode="Compact" />
+            <Button Name="AddQuestionsButton" Content="+ Add Questions" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Left" Click="AddQuestionsButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>
